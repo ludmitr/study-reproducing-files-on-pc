@@ -2,7 +2,8 @@
 def main():
     create_identical_file("olympic-medals.csv", "olympic-medals-copy.csv")
     create_file_with_n_lines("olympic-medals.csv", "olympic-medals-short.csv", 5)
-    create_files_by_country_letter("olympic-medals.csv", "olympic-medals-n.csv", "N")
+    create_file_by_country_letter("olympic-medals.csv", "olympic-medals-n.csv", "N")
+    create_file_by_n_gold_medals("olympic-medals.csv", "olympic-medals-5.csv", 5)
 
 
 def create_identical_file(original_file_path: str, file_path_to_copy: str):
@@ -30,7 +31,7 @@ def create_file_with_n_lines(original_file_path: str, file_path_to_copy: str, nu
                 file.write(line + "\n")
 
 
-def create_files_by_country_letter(original_file_path: str, file_path_to_copy: str, letter: str):
+def create_file_by_country_letter(original_file_path: str, file_path_to_copy: str, letter: str):
     """Create file_path_to_copy that will
     contain only countries that begin with the letter"""
     if not (letter.isalpha() and len(letter) == 1):
@@ -51,6 +52,23 @@ def create_files_by_country_letter(original_file_path: str, file_path_to_copy: s
         for line in lines_with_letter:
             file.write(line + "\n")
 
+
+def create_file_by_n_gold_medals(original_file_path: str, file_path_to_copy: str, num_medals: int):
+    """Create file_path_to_copy with countries that has at least num_medals """
+    with open(original_file_path, "r") as file:
+        original_data = file.read()
+
+    lines = original_data.split("\n")
+
+    # creating list with countries that has >= num_medals
+    lines_with_n_gold_medals = [lines[0]]
+    for line in lines[1:]:
+        if line and int(line.split(",")[-3]) >= 5:
+            lines_with_n_gold_medals.append(line)
+
+    with open(file_path_to_copy, "w") as file:
+        for line in lines_with_n_gold_medals:
+            file.write(line + "\n")
 
 if __name__ == '__main__':
     main()

@@ -5,6 +5,7 @@ def main():
     create_file_by_country_letter("olympic-medals.csv", "olympic-medals-n.csv", "N")
     create_file_by_n_gold_medals("olympic-medals.csv", "olympic-medals-5.csv", 5)
     create_file_at_least_n_medals("olympic-medals.csv","olympic-medals-total10.csv", 10)
+    create_country_files_with_medals_info("olympic-medals.csv")
 
 
 def create_identical_file(original_file_path: str, file_path_to_copy: str):
@@ -90,6 +91,28 @@ def create_file_at_least_n_medals(original_file_path: str, file_path_to_copy: st
     with open(file_path_to_copy, "w") as file:
         for line in lines_with_n_medals:
             file.write(line + "\n")
+
+
+def create_country_files_with_medals_info(original_file_path: str):
+    """
+    Create a different file for each country, called {COUNTRY}.txt
+    (for example, Sweden.txt). The file will contain the total number
+    of medals this country has won.
+    """
+    with open(original_file_path, "r") as file:
+        original_data = file.read()
+
+    lines = original_data.split("\n")
+
+    for line in lines:
+        if line:
+            # creating file with country name and writing inside amount of total medals
+            line_list = line.split(",")
+            country = line_list[0]
+            gold, silver, bronze = int(line_list[-3]), int(line_list[-2]), int(line_list[-1])
+            total_medals = sum([gold,silver,bronze])
+            with open(f"{country}.txt", "w") as file:
+                file.write(f"total medals: {total_medals}")
 
 
 if __name__ == '__main__':

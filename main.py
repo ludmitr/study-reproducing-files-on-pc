@@ -108,7 +108,7 @@ def create_country_files_with_medals_info(original_file_path: str):
         if line:
             # creating file with country name and writing inside amount of total medals
             line_list = line.split(",")
-            country = line_list[0]
+            country = line_list[0].replace('"', "")
             gold, silver, bronze = int(line_list[-3]), int(line_list[-2]), int(line_list[-1])
             total_medals = sum([gold, silver, bronze])
             with open(f"{country}.txt", "w") as file:

@@ -4,6 +4,7 @@ def main():
     create_file_with_n_lines("olympic-medals.csv", "olympic-medals-short.csv", 5)
     create_file_by_country_letter("olympic-medals.csv", "olympic-medals-n.csv", "N")
     create_file_by_n_gold_medals("olympic-medals.csv", "olympic-medals-5.csv", 5)
+    create_file_at_least_n_medals("olympic-medals.csv","olympic-medals-total10.csv", 10)
 
 
 def create_identical_file(original_file_path: str, file_path_to_copy: str):
@@ -53,7 +54,7 @@ def create_file_by_country_letter(original_file_path: str, file_path_to_copy: st
             file.write(line + "\n")
 
 
-def create_file_by_n_gold_medals(original_file_path: str, file_path_to_copy: str, num_medals: int):
+def create_file_by_n_gold_medals(original_file_path: str, file_path_to_copy: str, num_gold_medals: int):
     """Create file_path_to_copy with countries that has at least num_medals """
     with open(original_file_path, "r") as file:
         original_data = file.read()
@@ -69,6 +70,27 @@ def create_file_by_n_gold_medals(original_file_path: str, file_path_to_copy: str
     with open(file_path_to_copy, "w") as file:
         for line in lines_with_n_gold_medals:
             file.write(line + "\n")
+
+
+def create_file_at_least_n_medals(original_file_path: str, file_path_to_copy: str, num_medals: int):
+    with open(original_file_path, "r") as file:
+        original_data = file.read()
+
+    lines = original_data.split("\n")
+
+    # creating list with countries that has >= num_medals
+    lines_with_n_medals = [lines[0]]
+    for line in lines[1:]:
+        if line:
+            line_list = line.split(",")
+            gold, silver, bronze = int(line_list[-3]), int(line_list[-2]), int(line_list[-1])
+            if sum([gold, silver, bronze]) >= num_medals:
+                lines_with_n_medals.append(line)
+
+    with open(file_path_to_copy, "w") as file:
+        for line in lines_with_n_medals:
+            file.write(line + "\n")
+
 
 if __name__ == '__main__':
     main()
